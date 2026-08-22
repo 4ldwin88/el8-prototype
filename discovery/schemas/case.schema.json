@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://el8.health/schemas/discovery-eval-case.schema.json",
+  "title": "EL8 Discovery Evaluation Case",
+  "type": "object",
+  "required": ["id", "title", "family", "gateway", "script", "expect"],
+  "properties": {
+    "id": {"type": "string"},
+    "title": {"type": "string"},
+    "family": {"type": "string"},
+    "description": {"type": "string"},
+    "gateway": {
+      "type": "object",
+      "required": ["signals"],
+      "properties": {
+        "signals": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "healthy": {"type": "boolean", "default": false}
+      },
+      "additionalProperties": false
+    },
+    "script": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["when", "answer"],
+        "properties": {
+          "when": {"type": "object"},
+          "answer": {},
+          "note": {"type": "string"}
+        }
+      }
+    },
+    "expect": {
+      "type": "object",
+      "required": ["terminalSignals", "exitClass"],
+      "properties": {
+        "terminalSignals": {"type": "object", "additionalProperties": {"enum": ["confirmed", "cleared", "unresolved", "deferred"]}},
+        "requiredDrivers": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "allowedCandidates": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "forbiddenBranches": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "driverKnowable": {"type": "boolean"},
+        "exitClass": {"enum": ["resolved", "healthy-goal", "unresolved", "deferred", "opt-out", "safety-interrupt"]},
+        "maxQuestions": {"type": "integer", "minimum": 1},
+        "mustClarifyContradiction": {"type": "boolean"},
+        "mustPivotOnUncertainty": {"type": "boolean"},
+        "safetyInterrupt": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
